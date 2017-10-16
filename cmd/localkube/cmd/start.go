@@ -123,6 +123,10 @@ func SetupServer(s *localkube.LocalkubeServer) {
 	apiserver := s.NewAPIServer()
 	s.AddServer(apiserver)
 
+	// setup proxy
+	proxy := s.NewProxyServer()
+	s.AddServer(proxy)
+
 	// setup controller-manager
 	controllerManager := s.NewControllerManagerServer()
 	s.AddServer(controllerManager)
@@ -134,10 +138,6 @@ func SetupServer(s *localkube.LocalkubeServer) {
 	// setup kubelet
 	kubelet := s.NewKubeletServer()
 	s.AddServer(kubelet)
-
-	// setup proxy
-	proxy := s.NewProxyServer()
-	s.AddServer(proxy)
 
 	storageProvisioner := s.NewStorageProvisionerServer()
 	s.AddServer(storageProvisioner)
