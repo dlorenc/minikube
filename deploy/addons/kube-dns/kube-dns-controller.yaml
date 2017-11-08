@@ -44,7 +44,7 @@ spec:
           optional: true
       containers:
       - name: kubedns
-        image: gcr.io/google_containers/k8s-dns-kube-dns-amd64:1.14.5
+        image: gcr.io/google_containers/k8s-dns-kube-dns-amd64:1.14.7
         imagePullPolicy: IfNotPresent
         resources:
           # TODO: Set memory limits when we've profiled the container for large
@@ -56,24 +56,6 @@ spec:
           requests:
             cpu: 100m
             memory: 70Mi
-        livenessProbe:
-          httpGet:
-            path: /healthcheck/kubedns
-            port: 10054
-            scheme: HTTP
-          initialDelaySeconds: 60
-          timeoutSeconds: 5
-          successThreshold: 1
-          failureThreshold: 5
-        readinessProbe:
-          httpGet:
-            path: /readiness
-            port: 8081
-            scheme: HTTP
-          # we poll on pod startup for the Kubernetes master service and
-          # only setup the /readiness HTTP server once that's available.
-          initialDelaySeconds: 3
-          timeoutSeconds: 5
         args:
         - --domain=cluster.local.
         - --dns-port=10053
@@ -98,15 +80,6 @@ spec:
       - name: dnsmasq
         image: gcr.io/google_containers/k8s-dns-dnsmasq-nanny-amd64:1.14.5
         imagePullPolicy: IfNotPresent
-        livenessProbe:
-          httpGet:
-            path: /healthcheck/dnsmasq
-            port: 10054
-            scheme: HTTP
-          initialDelaySeconds: 60
-          timeoutSeconds: 5
-          successThreshold: 1
-          failureThreshold: 5
         args:
         - -v=2
         - -logtostderr
@@ -137,15 +110,6 @@ spec:
       - name: sidecar
         image: gcr.io/google_containers/k8s-dns-sidecar-amd64:1.14.5
         imagePullPolicy: IfNotPresent
-        livenessProbe:
-          httpGet:
-            path: /metrics
-            port: 10054
-            scheme: HTTP
-          initialDelaySeconds: 60
-          timeoutSeconds: 5
-          successThreshold: 1
-          failureThreshold: 5
         args:
         - --v=2
         - --logtostderr

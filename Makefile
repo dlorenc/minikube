@@ -310,7 +310,7 @@ storage-provisioner-image: out/storage-provisioner
 
 .PHONY: push-storage-provisioner-image
 push-storage-provisioner-image: storage-provisioner-image
-	gcloud docker -- push $(REGISTRY)/storage-provisioner:$(TAG)
+	gcloud docker -- push $(REGISTRY)/storage-provisioner:$(STORAGE_PROVISIONER_TAG)
 
 .PHONY: release-iso
 release-iso: minikube_iso checksum
