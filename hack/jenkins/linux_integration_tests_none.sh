@@ -35,5 +35,11 @@ EXTRA_START_ARGS="--kubernetes-version=file://$PWD/out/localkube"
 SUDO_PREFIX="sudo -E "
 export KUBECONFIG="/root/.kube/config"
 
+# "none" driver specific cleanup from previous runs.
+# kubeadm
+sudo kubeadm reset || true
+# Cleanup data directory
+rm -rf /data/*
+
 # Download files and set permissions
 source common.sh
